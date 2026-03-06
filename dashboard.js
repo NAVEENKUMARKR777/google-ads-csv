@@ -1,19 +1,40 @@
-// ── SUPABASE CONFIG ──────────────────────────────────────────────────────────
-const SUPABASE_URL = "https://jkcvwihwitgpxzljlmoh.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImprY3Z3aWh3aXRncHh6bGpsbW9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2ODkzODcsImV4cCI6MjA4ODI2NTM4N30.l2TYr2m_KgQ3kN2s2fCp6lxRiE7Z6c00rIqr-MWjQgw";
+// ── AUTHENTICATION & SECURE API ──────────────────────────────────────────────────────────
 
+// Check authentication on page load
+function checkAuthentication() {
+  const token = sessionStorage.getItem('authToken');
+  if (!token) {
+    // Redirect to login page if not authenticated
+    window.location.href = '/login';
+    return false;
+  }
+  return token;
+}
+
+// Secure Supabase fetch through Netlify Functions proxy
 async function supabaseFetch(table) {
+  const token = checkAuthentication();
+  if (!token) return [];
+
   const rows = [];
   let offset = 0;
   const limit = 1000;
+  
   while (true) {
-    const url = `${SUPABASE_URL}/rest/v1/${table}?select=*&order=id.asc&offset=${offset}&limit=${limit}`;
+    const url = `/.netlify/functions/supabase-proxy/${table}?select=*&order=id.asc&offset=${offset}&limit=${limit}`;
     const res = await fetch(url, {
       headers: {
-        "apikey": SUPABASE_KEY,
-        "Authorization": `Bearer ${SUPABASE_KEY}`,
+        "Authorization": `Bearer ${token}`,
       },
     });
+    
+    if (res.status === 401) {
+      // Token expired or invalid, redirect to login
+      sessionStorage.removeItem('authToken');
+      window.location.href = '/login';
+      return [];
+    }
+    
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const chunk = await res.json();
     rows.push(...chunk);
@@ -242,6 +263,9 @@ const svgRefresh = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="1
 const svgRefreshSmall = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><polyline points="21 3 21 9 15 9"/></svg>`;
 
 // ── INIT ─────────────────────────────────────────────────────────────────────
+// Check authentication before initializing the dashboard
+checkAuthentication();
+
 document.getElementById("csvInput").addEventListener("change", e => {
   const f = e.target.files[0]; if (!f) return;
   const reader = new FileReader();

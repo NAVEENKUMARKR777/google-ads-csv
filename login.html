@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Google Ads Performance</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .login-card {
+      background: white;
+      padding: 3rem;
+      border-radius: 12px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    
+    .login-logo {
+      margin-bottom: 2rem;
+    }
+    
+    .logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    
+    .logo-g { color: #4285f4; }
+    .logo-o1 { color: #ea4335; }
+    .logo-o2 { color: #fbbc05; }
+    .logo-g2 { color: #4285f4; }
+    .logo-l { color: #34a853; }
+    .logo-e { color: #ea4335; }
+    
+    .login-title {
+      color: #333;
+      margin-bottom: 2rem;
+      font-size: 1.5rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #555;
+      font-weight: 500;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid #e1e5e9;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: #4285f4;
+    }
+    
+    .login-btn {
+      width: 100%;
+      padding: 0.875rem;
+      background: #4285f4;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .login-btn:hover {
+      background: #3367d6;
+    }
+    
+    .login-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    
+    .error-message {
+      color: #ea4335;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      display: none;
+    }
+    
+    .loading {
+      display: none;
+      margin-left: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="logo">
+          <span class="logo-g">G</span><span class="logo-o1">o</span><span class="logo-o2">o</span><span class="logo-g2">g</span><span class="logo-l">l</span><span class="logo-e">e</span>
+        </div>
+        <h1>Ads Performance</h1>
+      </div>
+      
+      <h2 class="login-title">Enter Password to Continue</h2>
+      
+      <form id="loginForm">
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <input 
+            type="password" 
+            id="password" 
+            class="form-input" 
+            placeholder="Enter your password"
+            required
+            autocomplete="current-password"
+          />
+        </div>
+        
+        <button type="submit" class="login-btn" id="loginBtn">
+          Login
+          <span class="loading">⏳</span>
+        </button>
+        
+        <div class="error-message" id="errorMessage"></div>
+      </form>
+    </div>
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html>

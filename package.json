@@ -1,0 +1,26 @@
+{
+  "name": "google-ads-csv-viewer",
+  "version": "1.0.0",
+  "description": "Secure Google Ads Performance Dashboard with Authentication",
+  "main": "index.html",
+  "scripts": {
+    "netlify-dev": "netlify dev",
+    "build": "echo 'No build step required for static site'"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  },
+  "keywords": [
+    "google-ads",
+    "dashboard",
+    "csv",
+    "analytics",
+    "netlify-functions"
+  ],
+  "author": "",
+  "license": "MIT"
+}
