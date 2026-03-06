@@ -102,11 +102,22 @@ exports.handler = async (event, context) => {
     };
 
   } catch (error) {
-    console.error('Proxy error:', error);
+    console.error('Proxy error details:', error);
+    console.error('Error stack:', error.stack);
+    console.error('Environment variables:', {
+      SUPABASE_URL: SUPABASE_URL ? 'Set' : 'Missing',
+      SUPABASE_KEY: SUPABASE_KEY ? 'Set' : 'Missing',
+      JWT_SECRET: JWT_SECRET ? 'Set' : 'Missing'
+    });
+    
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ error: 'Internal server error' })
+      body: JSON.stringify({ 
+        error: 'Internal server error',
+        message: error.message,
+        details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      })
     };
   }
 };

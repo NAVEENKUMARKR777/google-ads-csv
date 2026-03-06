@@ -110,14 +110,25 @@ exports.handler = async (event, context) => {
     };
 
   } catch (error) {
-    console.error('Auth error:', error);
+    console.error('Auth error details:', error);
+    console.error('Error stack:', error.stack);
+    console.error('Environment variables:', {
+      SUPABASE_URL: SUPABASE_URL ? 'Set' : 'Missing',
+      SUPABASE_KEY: SUPABASE_KEY ? 'Set' : 'Missing',
+      JWT_SECRET: JWT_SECRET ? 'Set' : 'Missing'
+    });
+    
     return {
       statusCode: 500,
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ error: 'Internal server error' })
+      body: JSON.stringify({ 
+        error: 'Internal server error',
+        message: error.message,
+        details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      })
     };
   }
 };
