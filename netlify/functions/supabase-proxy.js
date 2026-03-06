@@ -80,15 +80,21 @@ exports.handler = async (event, context) => {
     }
 
     // Make the request to Supabase
-    const supabaseResponse = await fetch(supabaseUrl, {
+    const requestOptions = {
       method: event.httpMethod,
       headers: {
         'apikey': SUPABASE_KEY,
         'Authorization': `Bearer ${SUPABASE_KEY}`,
         'Content-Type': 'application/json'
-      },
-      body: event.body
-    });
+      }
+    };
+    
+    // Only add body for POST, PUT, PATCH requests
+    if (event.httpMethod !== 'GET' && event.httpMethod !== 'HEAD' && event.body) {
+      requestOptions.body = event.body;
+    }
+    
+    const supabaseResponse = await fetch(supabaseUrl, requestOptions);
 
     const responseText = await supabaseResponse.text();
     
